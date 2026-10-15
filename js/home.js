@@ -1,0 +1,4 @@
+/* Home: mood chips */
+const MOODS=[['Anxious','I feel anxious and overwhelmed right now'],['Sad','I am carrying sadness today'],['Grateful','I feel grateful and want to mark this moment'],['Lost','I feel lost and need direction'],['Tired','I am exhausted and running on empty']];
+$('moodChips').innerHTML=MOODS.map((m,i)=>`<button onclick="mood(${i},this)" class="shrink-0 rounded-full border border-white/80 bg-white/60 px-4 py-2 text-[12.5px] font-bold text-neutral-600 backdrop-blur transition active:scale-95">${m[0]}</button>`).join('');
+function mood(i,el){$('sitInput').value=MOODS[i][1];document.querySelectorAll('#moodChips button').forEach(b=>b.classList.remove('bg-white','text-neutral-900','shadow-lg'));el.classList.add('bg-white','text-neutral-900','shadow-lg');$('sitInput').focus();}

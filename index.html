@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Lantern — a verse for what you're going through</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="js/tailwind-config.js"></script>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-neutral-200 font-sans text-neutral-900 antialiased">
+
+<div id="appRoot" data-theme="dawn" class="relative mx-auto flex h-dvh w-full flex-col overflow-hidden  shadow-2xl">
+
+  <!-- TOP APP BAR -->
+  <header class="z-20 flex items-center justify-between px-5 pb-3 pt-5">
+    <div class="flex items-center gap-2.5">
+ 
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" class="w-8"><path d="M12 3s5 4.6 5 9a5 5 0 0 1-10 0c0-4.4 5-9 5-9Z"/><path d="M12 21v-4"/></svg>
+   
+      <span class="text-lg font-black tracking-tight">Lantern</span>
+    </div>
+    <button id="planBadge" onclick="go('view-pricing')" class="rounded-full bg-white/70 px-3.5 py-1.5 text-[10px] font-extrabold tracking-widest text-neutral-700 shadow-sm backdrop-blur">FREE PLAN</button>
+  </header>
+
+  <!-- MAIN SCROLL AREA -->
+  <main id="main" class="no-sb flex-1 overflow-y-auto px-5 md:px-[24vw] pb-32 pt-1">
+
+    <!-- ============ HOME ============ -->
+    <section id="view-home" class="view">
+       
+
+      <h1 class="mt-2 text-center text-[42px] font-black leading-[1.05] tracking-tight">Get<span class="bg-gradient-to-r from-amber-500 via-pink-500 to-sky-500 bg-clip-text text-transparent">Directed</span></h1>
+      <p class="mx-auto mt-3 max-w-[260px] text-center text-[13px] font-medium leading-relaxed text-neutral-600">Share what you're carrying in your own words. Lantern returns scripture that meets you exactly there.</p>
+
+      <div class="no-sb mt-6 flex gap-2 overflow-x-auto pb-1" id="moodChips"></div>
+
+      <div class="mt-3 rounded-3xl bg-white p-5 shadow-xl shadow-pink-200/40">
+        <label class="text-[10px] font-extrabold tracking-[0.14em] text-neutral-400">YOUR SITUATION</label>
+        <textarea id="sitInput" rows="4" placeholder="Write naturally… e.g. I can't stop worrying about tomorrow and I feel alone in it." class="mt-2 w-full resize-none bg-transparent text-[14.5px] leading-relaxed outline-none placeholder:text-neutral-300"></textarea>
+        <div class="mt-2 flex items-center justify-end gap-2.5">
+          <button id="micBtn" aria-label="Speak your situation" onclick="mic()" class="grid h-11 w-11 place-items-center rounded-full bg-neutral-100 text-neutral-600 transition active:scale-95">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-5 w-5"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 11a7 7 0 0 1-14 0"/><path d="M12 18v4"/></svg>
+          </button>
+          <button id="findBtn" onclick="search()" class="flex items-center gap-2 rounded-full bg-neutral-900 px-6 py-3.5 text-sm font-extrabold text-white shadow-lg shadow-neutral-900/30 transition active:scale-95">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3Z"/><path d="M19 15l.9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9L19 15Z"/></svg>
+            Find my verse
+          </button>
+        </div>
+      </div>
+
+      <button id="careLink" onclick="go('view-care')" class="mt-4 flex w-full items-center gap-3 rounded-2xl border border-dashed border-rose-300 bg-white/50 px-4 py-3.5 text-left text-[12.5px] font-bold text-rose-700 backdrop-blur active:scale-[.98]">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-5 w-5 shrink-0"><path d="M12 3 4 6v6c0 4.4 3.2 7.7 8 9 4.8-1.3 8-4.6 8-9V6l-8-3Z"/><path d="M12 8v4"/><path d="M12 15h.01"/></svg>
+        Feeling unsafe right now? Immediate care resources
+      </button>
+
+      <p class="mt-6 px-4 text-center text-[10.5px] font-medium leading-relaxed text-neutral-500">Lantern is a reading aid, not counseling or medical advice. Scripture text comes from bible-api.com.</p>
+    </section>
+
+    <!-- ============ SCENARIOS ============ -->
+    <section id="view-scenarios" class="view hidden">
+      <h2 class="text-2xl font-black tracking-tight">Scenarios</h2>
+      <div class="no-sb mt-4 flex gap-2 overflow-x-auto pb-1" id="catChips"></div>
+      <p id="scCount" class="mt-4 text-[10.5px] font-extrabold tracking-[0.14em] text-neutral-500"></p>
+      <div id="scList" class="mt-3 flex flex-col gap-3"></div>
+    </section>
+
+    <!-- ============ RESULTS ============ -->
+    <section id="view-results" class="view hidden">
+      <div class="flex items-center gap-3">
+        <button onclick="go('view-home')" class="grid h-9 w-9 place-items-center rounded-full bg-white/80 shadow-sm active:scale-95"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="h-4 w-4"><path d="m15 6-6 6 6 6"/></svg></button>
+        <h2 class="text-2xl font-black tracking-tight">Your verses</h2>
+      </div>
+      <p id="resEcho" class="mt-4 rounded-2xl bg-white/60 px-4 py-3 text-[12.5px] font-medium italic leading-relaxed text-neutral-600 backdrop-blur"></p>
+      <div id="careSlot" class="mt-4"></div>
+      <div id="verseSlot" class="mt-4 flex flex-col gap-4"></div>
+      <button onclick="reroll()" class="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-neutral-900 py-3.5 text-sm font-extrabold text-white shadow-lg active:scale-95">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4"><path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 3v6h-6"/></svg>
+        Show different verses
+      </button>
+      <p class="mt-6 px-4 text-center text-[10.5px] font-medium leading-relaxed text-neutral-500">Lantern is a reading aid, not counseling or medical advice. Scripture text comes from bible-api.com.</p>
+    </section>
+
+    <!-- ============ JOURNAL ============ -->
+    <section id="view-journal" class="view hidden">
+      <h2 class="text-2xl font-black tracking-tight">Journal</h2>
+      <p class="mt-1 text-[11px] font-bold tracking-widest text-neutral-500">SAVED ON THIS DEVICE ONLY</p>
+      <div id="jEmpty" class="mt-6 rounded-3xl bg-white/80 px-6 py-12 text-center shadow-lg backdrop-blur">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="mx-auto h-14 w-14 text-neutral-300"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/><path d="M9 7h7M9 11h5"/></svg>
+        <h3 class="mt-4 text-base font-extrabold">Your journal is empty</h3>
+        <p class="mt-1 text-[12.5px] font-medium text-neutral-500">Save verses from your results to build your collection.</p>
+      </div>
+      <div id="jList" class="mt-5 flex flex-col gap-3"></div>
+      <div class="mt-4 flex gap-2.5">
+        <button onclick="exportJournal()" class="flex flex-1 items-center justify-center gap-2 rounded-full bg-white/80 py-3 text-[12.5px] font-extrabold text-neutral-700 shadow-sm backdrop-blur active:scale-95"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>Export</button>
+        <button onclick="clearJournal()" class="flex flex-1 items-center justify-center gap-2 rounded-full bg-white/80 py-3 text-[12.5px] font-extrabold text-rose-600 shadow-sm backdrop-blur active:scale-95"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Clear all</button>
+      </div>
+    </section>
+
+    <!-- ============ SETTINGS ============ -->
+    <section id="view-settings" class="view hidden">
+      <h2 class="text-2xl font-black tracking-tight">Settings</h2>
+
+      <p class="mt-6 text-[10.5px] font-extrabold tracking-[0.14em] text-neutral-500">SCRIPTURE</p>
+      <div class="mt-2 divide-y divide-neutral-100 rounded-3xl bg-white px-5 shadow-xl shadow-pink-200/30">
+        <div class="flex items-center justify-between gap-3 py-3.5"><p class="text-[13px] font-bold">Translation</p><select id="setTrans" class="w-40 rounded-xl bg-neutral-100 px-2 py-2 text-right text-[12px] font-semibold outline-none"><option value="web">World English (WEB)</option><option value="kjv">King James (KJV)</option><option value="asv">American Standard (ASV)</option><option value="bbe">Basic English (BBE)</option></select></div>
+        <div class="flex items-center justify-between gap-3 py-3.5"><p class="text-[13px] font-bold">Show "why this verse"</p><button data-tg="why" class="tg relative h-7 w-12 rounded-full bg-neutral-200 transition"><span class="absolute left-1 top-1 h-5 w-5 rounded-full bg-white shadow transition-all"></span></button></div>
+        <div class="flex items-center justify-between gap-3 py-3.5"><p class="text-[13px] font-bold">Auto read-aloud</p><button data-tg="auto" class="tg relative h-7 w-12 rounded-full bg-neutral-200 transition"><span class="absolute left-1 top-1 h-5 w-5 rounded-full bg-white shadow transition-all"></span></button></div>
+      </div>
+
+      <p class="mt-6 text-[10.5px] font-extrabold tracking-[0.14em] text-neutral-500">APPEARANCE &amp; VOICE</p>
+      <div class="mt-2 divide-y divide-neutral-100 rounded-3xl bg-white px-5 shadow-xl shadow-pink-200/30">
+        <div class="flex items-center justify-between gap-3 py-3.5"><p class="text-[13px] font-bold">Gradient theme</p><select id="setTheme" class="w-40 rounded-xl bg-neutral-100 px-2 py-2 text-right text-[12px] font-semibold outline-none"><option value="dawn">Dawn</option><option value="blossom">Blossom</option><option value="meadow">Meadow</option><option value="ember">Ember</option></select></div>
+        <div class="flex items-center justify-between gap-3 py-3.5"><p class="text-[13px] font-bold">Reduce motion</p><button data-tg="motion" class="tg relative h-7 w-12 rounded-full bg-neutral-200 transition"><span class="absolute left-1 top-1 h-5 w-5 rounded-full bg-white shadow transition-all"></span></button></div>
+        <div class="flex items-center justify-between gap-3 py-3.5"><p class="text-[13px] font-bold">Haptic feedback</p><button data-tg="haptic" class="tg relative h-7 w-12 rounded-full bg-neutral-200 transition"><span class="absolute left-1 top-1 h-5 w-5 rounded-full bg-white shadow transition-all"></span></button></div>
+        <div class="flex items-center justify-between gap-3 py-3.5"><p class="text-[13px] font-bold">Mic language</p><select id="setLang" class="w-40 rounded-xl bg-neutral-100 px-2 py-2 text-right text-[12px] font-semibold outline-none"><option value="en-US">English (US)</option><option value="en-GB">English (UK)</option><option value="es-ES">Español</option><option value="fr-FR">Français</option></select></div>
+        <div class="flex items-center justify-between gap-3 py-3.5"><p class="text-[13px] font-bold">Speech rate</p><input id="setRate" type="range" min="0.6" max="1.4" step="0.1" class="w-32 accent-neutral-900"></div>
+      </div>
+
+      <p class="mt-6 text-[10.5px] font-extrabold tracking-[0.14em] text-neutral-500">SAFETY</p>
+      <div class="mt-2 divide-y divide-neutral-100 rounded-3xl bg-white px-5 shadow-xl shadow-pink-200/30">
+        <div class="flex items-center justify-between gap-3 py-3.5"><p class="text-[13px] font-bold">Care link on Home</p><button data-tg="careLink" class="tg relative h-7 w-12 rounded-full bg-neutral-200 transition"><span class="absolute left-1 top-1 h-5 w-5 rounded-full bg-white shadow transition-all"></span></button></div>
+        <div class="flex items-center justify-between gap-3 py-3.5"><p class="text-[13px] font-bold">Content boundary</p><select id="setBound" class="w-40 rounded-xl bg-neutral-100 px-2 py-2 text-right text-[12px] font-semibold outline-none"><option value="standard">Standard</option><option value="strict">Strict</option></select></div>
+      </div>
+
+      <p class="mt-6 text-[10.5px] font-extrabold tracking-[0.14em] text-neutral-500">DATA &amp; MORE</p>
+      <div class="mt-2 divide-y divide-neutral-100 rounded-3xl bg-white px-5 shadow-xl shadow-pink-200/30">
+        <button onclick="go('view-pricing')" class="flex w-full items-center justify-between py-3.5 text-left"><p class="text-[13px] font-bold">Plan &amp; pricing</p><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="h-4 w-4 text-neutral-300"><path d="m9 6 6 6-6 6"/></svg></button>
+        <button onclick="go('view-care')" class="flex w-full items-center justify-between py-3.5 text-left"><p class="text-[13px] font-bold">Care resources</p><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="h-4 w-4 text-neutral-300"><path d="m9 6 6 6-6 6"/></svg></button>
+        <button onclick="eraseAll()" class="flex w-full items-center justify-between py-3.5 text-left"><p class="text-[13px] font-bold text-rose-600">Erase everything</p><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="h-4 w-4 text-rose-300"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button>
+      </div>
+      <div class="h-4"></div>
+    </section>
+
+    <!-- ============ PRICING ============ -->
+    <section id="view-pricing" class="view hidden">
+      <div class="flex items-center gap-3">
+        <button onclick="go('view-settings')" class="grid h-9 w-9 place-items-center rounded-full bg-white/80 shadow-sm active:scale-95"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="h-4 w-4"><path d="m15 6-6 6 6 6"/></svg></button>
+        <h2 class="text-2xl font-black tracking-tight">Plans</h2>
+      </div>
+      <div class="mt-4 flex rounded-full bg-white/70 p-1 backdrop-blur">
+        <button id="billM" onclick="setBill('m')" class="flex-1 rounded-full py-2 text-[12px] font-extrabold">Monthly</button>
+        <button id="billY" onclick="setBill('y')" class="flex-1 rounded-full py-2 text-[12px] font-extrabold text-neutral-500">Yearly · save 20%</button>
+      </div>
+      <div id="tiers" class="mt-5 flex flex-col gap-4"></div>
+      <p class="mt-4 text-[10.5px] font-extrabold tracking-[0.14em] text-neutral-500">COMPARE</p>
+      <div id="cmpTable" class="mt-2 rounded-3xl bg-white px-5 py-2 text-[11.5px] shadow-xl shadow-pink-200/30"></div>
+      <p class="mt-6 text-[10.5px] font-extrabold tracking-[0.14em] text-neutral-500">FAQ</p>
+      <div class="mt-2 flex flex-col gap-2">
+        <details class="rounded-2xl bg-white px-4 py-3.5 text-[12.5px] shadow-lg"><summary class="font-extrabold">Is Lantern therapy?</summary><p class="mt-2 font-medium leading-relaxed text-neutral-500">No. Lantern is a scripture reading aid — not counseling, diagnosis, or medical advice. In crisis, contact 988 (US) or findahelpline.com.</p></details>
+        <details class="rounded-2xl bg-white px-4 py-3.5 text-[12.5px] shadow-lg"><summary class="font-extrabold">Where does scripture come from?</summary><p class="mt-2 font-medium leading-relaxed text-neutral-500">Public-domain translations (WEB, KJV, ASV, BBE) fetched live from bible-api.com.</p></details>
+        <details class="rounded-2xl bg-white px-4 py-3.5 text-[12.5px] shadow-lg"><summary class="font-extrabold">How does matching work?</summary><p class="mt-2 font-medium leading-relaxed text-neutral-500">Lantern reads what you share and matches it to scripture that fits. A built-in safety layer watches for crisis and harm and always surfaces care resources.</p></details>
+        <details class="rounded-2xl bg-white px-4 py-3.5 text-[12.5px] shadow-lg"><summary class="font-extrabold">Where is my data?</summary><p class="mt-2 font-medium leading-relaxed text-neutral-500">On your device. Journal, settings and plan live in localStorage. Export or erase anytime.</p></details>
+      </div>
+      <p class="mt-6 px-4 text-center text-[10.5px] font-medium text-neutral-500">Hackathon build — plans are simulated locally, no card required.</p>
+    </section>
+
+    <!-- ============ CARE ============ -->
+    <section id="view-care" class="view hidden">
+      <div class="flex items-center gap-3">
+        <button onclick="go('view-home')" class="grid h-9 w-9 place-items-center rounded-full bg-white/80 shadow-sm active:scale-95"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="h-4 w-4"><path d="m15 6-6 6 6 6"/></svg></button>
+        <h2 class="text-2xl font-black tracking-tight">You matter</h2>
+      </div>
+      <div class="mt-4 rounded-3xl border border-rose-200 bg-gradient-to-br from-rose-50 to-rose-100 p-5 text-rose-900 shadow-xl">
+        <h3 class="flex items-center gap-2 text-[15px] font-black"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-5 w-5"><path d="M12 3 4 6v6c0 4.4 3.2 7.7 8 9 4.8-1.3 8-4.6 8-9V6l-8-3Z"/></svg>Immediate support</h3>
+        <p class="mt-2 text-[12.5px] font-medium leading-relaxed">I am not a mental health professional. If you are feeling overwhelmed or having thoughts of suicide, please reach out right now — people want to listen.</p>
+        <ul class="mt-3 list-disc pl-5 text-[12.5px] font-medium leading-relaxed">
+          <li><b>US:</b> call or text <b>988</b> (Suicide &amp; Crisis Lifeline) — 24/7</li>
+          <li><b>Text:</b> HOME to <b>741741</b> (Crisis Text Line)</li>
+          <li><b>International:</b> <a class="font-extrabold underline" href="https://findahelpline.com" target="_blank">findahelpline.com</a></li>
+          <li><b>Immediate danger:</b> call <b>911</b> or your local emergency number</li>
+        </ul>
+        <div class="mt-4 flex gap-2">
+          <a href="tel:988" class="flex-1 rounded-full bg-neutral-900 py-2.5 text-center text-[12px] font-extrabold text-white">Call 988</a>
+          <a href="sms:988" class="flex-1 rounded-full bg-white py-2.5 text-center text-[12px] font-extrabold text-rose-700">Text 988</a>
+        </div>
+      </div>
+      <div class="mt-4 rounded-3xl border border-amber-200 bg-gradient-to-br from-amber-50 to-amber-100 p-5 text-amber-900 shadow-xl">
+        <h3 class="text-[15px] font-black">Worried about hurting someone or breaking the law?</h3>
+        <p class="mt-2 text-[12.5px] font-medium leading-relaxed">Lantern can't walk that road with you — but people can. Talking to a professional, clergy member, or trusted person today can change everything.</p>
+      </div>
+      <div class="mt-4 rounded-3xl bg-white p-5 text-[12.5px] font-medium leading-relaxed text-neutral-600 shadow-xl">The verses Lantern shares are meant to offer hope and remind you of God's enduring love and the value of your life. Please also consider a trusted person or professional. <b class="text-neutral-900">Your life matters, and help is available.</b></div>
+    </section>
+  </main>
+
+  <!-- BOTTOM TAB BAR -->
+  <nav id="tabbar" class="absolute md:w-[40vw] inset-x-4 md:inset-x-[30vw] bottom-4 z-20 flex items-center justify-around rounded-full bg-white/90 px-2 py-2.5 shadow-2xl shadow-neutral-900/20 backdrop-blur-xl">
+    <button data-tab="view-home" class="tab flex w-14 flex-col items-center gap-1 text-[9px] font-extrabold text-neutral-400"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="h-5 w-5"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>Home</button>
+    <button data-tab="view-scenarios" class="tab flex w-14 flex-col items-center gap-1 text-[9px] font-extrabold text-neutral-400"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="h-5 w-5"><circle cx="12" cy="12" r="9"/><path d="m15 9-2 5-4 1 2-5 4-1Z"/></svg>Scenarios</button>
+    <button onclick="go('view-home');setTimeout(mic,300)" class="-translate-y-4 grid h-14 w-14 place-items-center rounded-full bg-neutral-900 text-white shadow-xl shadow-neutral-900/40 active:scale-95"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-6 w-6"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 11a7 7 0 0 1-14 0"/><path d="M12 18v4"/></svg></button>
+    <button data-tab="view-journal" class="tab flex w-14 flex-col items-center gap-1 text-[9px] font-extrabold text-neutral-400"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="h-5 w-5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg>Journal</button>
+    <button data-tab="view-settings" class="tab flex w-14 flex-col items-center gap-1 text-[9px] font-extrabold text-neutral-400"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="h-5 w-5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3h.1a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9v.1a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg>Settings</button>
+  </nav>
+
+  <!-- SHEETS + SCRIM + TOAST -->
+  <div id="scrim" onclick="closeSheets()" class="pointer-events-none absolute inset-0 z-30 bg-neutral-900/40 opacity-0 backdrop-blur-[2px] transition"></div>
+
+
+  <div id="sheet-scenario" class="sheet absolute inset-x-0 bottom-0 z-40 max-h-[78%] translate-y-full overflow-y-auto rounded-t-[30px] bg-white px-5 pb-8 pt-3 transition-transform duration-300">
+    <div class="mx-auto mb-4 h-1.5 w-11 rounded-full bg-neutral-200"></div>
+    <h3 id="ssTitle" class="text-lg font-black"></h3>
+    <p id="ssDesc" class="mt-1 text-[12.5px] font-medium text-neutral-500"></p>
+    <p class="mt-4 text-[10.5px] font-extrabold tracking-[0.14em] text-neutral-400">TRY ONE OF THESE</p>
+    <div id="ssPrompts" class="mt-2 flex flex-col gap-2"></div>
+    <button id="ssGo" class="mt-4 w-full rounded-full bg-neutral-900 py-3.5 text-[13px] font-extrabold text-white">Use this scenario</button>
+  </div>
+
+  <div id="sheet-limit" class="sheet absolute inset-x-0 bottom-0 z-40 translate-y-full rounded-t-[30px] bg-white px-5 pb-8 pt-3 transition-transform duration-300">
+    <div class="mx-auto mb-4 h-1.5 w-11 rounded-full bg-neutral-200"></div>
+    <h3 class="text-lg font-black">You've used today's free searches</h3>
+    <p class="mt-1 text-[12.5px] font-medium leading-relaxed text-neutral-500">Free includes 3 verse searches per day. Lantern Plus unlocks unlimited searching, all translations, voice and more.</p>
+    <button onclick="closeSheets();go('view-pricing')" class="mt-4 w-full rounded-full bg-neutral-900 py-3.5 text-[13px] font-extrabold text-white">See plans</button>
+    <button onclick="closeSheets()" class="mt-2 w-full rounded-full bg-neutral-100 py-3 text-[12.5px] font-extrabold">Maybe later</button>
+  </div>
+
+  <div id="toast" class="pointer-events-none absolute left-1/2 top-16 z-50 -translate-x-1/2 -translate-y-3 rounded-full bg-neutral-900 px-5 py-2.5 text-[12px] font-extrabold text-white opacity-0 transition"></div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/state.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/safety.js"></script>
+<script src="js/ai.js"></script>
+<script src="js/scripture.js"></script>
+<script src="js/results.js"></script>
+<script src="js/voice.js"></script>
+<script src="js/home.js"></script>
+<script src="js/scenarios.js"></script>
+<script src="js/journal.js"></script>
+<script src="js/settings.js"></script>
+<script src="js/pricing.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

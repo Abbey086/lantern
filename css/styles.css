@@ -1,0 +1,12 @@
+/* Lantern — base styles (Tailwind handles the rest) */
+
+.no-sb::-webkit-scrollbar{display:none} .no-sb{scrollbar-width:none}
+.rm *{animation:none!important;transition:none!important}
+details>summary{list-style:none} details>summary::-webkit-details-marker{display:none}
+
+/* Gradient themes (switched via data-theme on #appRoot) */
+#appRoot{background-image:linear-gradient(to bottom,var(--g1),var(--g2),var(--g3))}
+#appRoot[data-theme=dawn]{--g1:#bae6fd;--g2:#fbcfe8;--g3:#ffedd5}
+#appRoot[data-theme=blossom]{--g1:#fbcfe8;--g2:#e9d5ff;--g3:#ffedd5}
+#appRoot[data-theme=meadow]{--g1:#d1fae5;--g2:#bae6fd;--g3:#fef3c7}
+#appRoot[data-theme=ember]{--g1:#fed7aa;--g2:#fecdd3;--g3:#e9d5ff}
